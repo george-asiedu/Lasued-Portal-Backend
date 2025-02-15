@@ -47,7 +47,7 @@ import {AdminSeeder} from "./seeds/admin.seeder";
       provide: APP_PIPE,
       useClass: ValidationPipe,
     },
-    AppService
+    AppService, AdminSeeder
   ],
 })
 export class AppModule implements OnModuleInit {
