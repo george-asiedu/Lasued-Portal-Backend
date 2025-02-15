@@ -1,4 +1,4 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import { Module, ValidationPipe, OnModuleInit  } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -8,6 +8,8 @@ import { pgConfig } from './config/dbConfig';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { SeedsModule } from './seeds/seeds.module';
+import {AdminSeeder} from "./seeds/admin.seeder";
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -37,6 +39,7 @@ import { UsersModule } from './users/users.module';
     }),
     AuthModule,
     UsersModule,
+    SeedsModule,
   ],
   controllers: [AppController],
   providers: [
@@ -47,4 +50,10 @@ import { UsersModule } from './users/users.module';
     AppService
   ],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(private readonly adminSeeder: AdminSeeder) {}
+
+  async onModuleInit() {
+    await this.adminSeeder.seedAdmin();
+  }
+}
