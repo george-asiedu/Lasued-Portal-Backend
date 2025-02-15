@@ -18,6 +18,7 @@ async function bootstrap() {
       .setDescription(constants.swaggerDocsDescription)
       .setVersion(constants.swaggerDocsVersion)
       .addServer(`${constants.localUrl}${port}/`, 'Local environment')
+      .addServer(`${constants.productionUrl}`, 'Production environment')
       .addBearerAuth()
       .build();
 
