@@ -6,8 +6,20 @@ export const UserResponseExample = {
             name: 'George Asiedu',
             email: 'george.asiedu@gmail.com',
             role: 'admin',
-            isVerified: false,
-            image: null
+            isVerified: false
+        }
+    }
+}
+
+export const RegisterResponseExample = {
+    message: 'Success',
+    data: {
+        user: {
+            id: 1,
+            name: 'George Asiedu',
+            email: 'george.asiedu@gmail.com',
+            role: 'admin',
+            isVerified: false
         },
         token: 'block token'
     }
@@ -22,8 +34,7 @@ export const LoginResponseExample = {
             email: 'george.asiedu@gmail.com',
             name: 'George Asiedu',
             role: 'Admin',
-            isVerified: true,
-            image: null
+            isVerified: true
         }
     }
 }
