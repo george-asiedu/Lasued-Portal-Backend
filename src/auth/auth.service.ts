@@ -50,7 +50,10 @@ export class AuthService {
                 throw new BadRequestException(`Error sending email: ${emailError.message}`);
             }
 
-            const {password, refreshToken, code: userCode, ...userResponse} = newUser;
+            const {
+                password, refreshToken, deletedAt, isVerified,
+                createdAt, updatedAt, code: userCode, ...userResponse
+            } = newUser;
 
             return { user: userResponse, token: blockToken };
         } catch (error) {
