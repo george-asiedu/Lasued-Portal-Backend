@@ -5,6 +5,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_PIPE } from '@nestjs/core';
 import { pgConfig } from './config/dbConfig';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -14,7 +17,27 @@ import { pgConfig } from './config/dbConfig';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => pgConfig(configService)
-    }),],
+    }),
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        transport: {
+          host: configService.get<string>('MAIL_HOST'),
+          port: configService.get<number>('MAIL_PORT'),
+          auth: {
+            user: configService.get<string>('MAIL_USER'),
+            pass: configService.get<string>('MAIL_PASS'),
+          },
+        },
+        defaults: {
+          from: `"Verify your account" <${configService.get<string>('MAIL_USER')}>`,
+        },
+      }),
+    }),
+    AuthModule,
+    UsersModule,
+  ],
   controllers: [AppController],
   providers: [
     {
