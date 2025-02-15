@@ -43,6 +43,8 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+
+$ npm run seed
 ```
 
 ## Run tests
