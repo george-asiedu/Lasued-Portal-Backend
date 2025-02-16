@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Req } from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Req} from '@nestjs/common';
 import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {BaseController} from "../utils/baseController";
 import { UsersService } from './users.service';
@@ -41,7 +41,7 @@ export class UsersController extends BaseController {
         description: 'Bad Request.',
         example: { message: 'Invalid user ID format.' }
     })
-    async getUserById(@Param('id', ParseIntPipe) id: number): Promise<User | null> {
+    async getUserById(@Param('id', ParseUUIDPipe) id: string): Promise<User | null> {
         return await this.usersService.getUserById(id);
     }
 
@@ -73,7 +73,7 @@ export class UsersController extends BaseController {
         description: 'Bad Request.',
         example: { message: 'User ID not valid' }
     })
-    async updateUser(@Param('id') id: number, @Body() updateData: Partial<User>) {
+    async updateUser(@Param('id') id: string, @Body() updateData: Partial<User>) {
         return await this.usersService.updateUser(id, updateData);
     }
 
