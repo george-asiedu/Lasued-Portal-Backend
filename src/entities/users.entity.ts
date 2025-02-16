@@ -1,6 +1,7 @@
-import {Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import {Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserRole } from 'src/model/role.enum';
+import { CourseRegistration } from './course-registration.entity';
 
 @Entity()
 export class User {
@@ -31,6 +32,9 @@ export class User {
 
     @Column({ default: false })
     isVerified!: boolean;
+
+    @OneToMany(() => CourseRegistration, (registration) => registration.student)
+    public courseRegistrations!: CourseRegistration[];
 
     @CreateDateColumn({ type: 'timestamp' })
     createdAt!: Date;
