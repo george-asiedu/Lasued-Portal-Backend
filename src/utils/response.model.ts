@@ -63,3 +63,25 @@ export const LoginBadRequestExample = [
     'email must be an email',
     'password must be at least 8 characters long'
 ]
+
+export const CoursesResponseExample = {
+    message: 'Success',
+    data: {
+        id: 'ghgjdjskfc',
+        course_name: 'Cloud Computing',
+        course_code: 'COC342',
+        credit_unit: 3
+    }
+}
+
+export const GetAllCursesResponseExample = {
+    message: 'Success',
+    data: [
+        {
+            id: 'ghgjdjskfc',
+            course_name: 'Cloud Computing',
+            course_code: 'COC342',
+            credit_unit: 3
+        }
+    ]
+}
