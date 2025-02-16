@@ -22,6 +22,9 @@ export class AdminSeeder {
                 password: hashedPassword,
                 role: UserRole.Admin,
                 isVerified: true,
+                address: '2 PINE STREET',
+                dob: '12-10-1998',
+                phone: '023456789',
             });
 
             await this.userRepository.save(adminUser);
