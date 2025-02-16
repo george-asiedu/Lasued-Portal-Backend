@@ -87,12 +87,12 @@ export class CoursesController extends BaseController {
         return await this.coursesService.getCourseById(id);
     }
 
-    @Post(':id/register')
+    @Post('register/:courseId')
     @Roles(UserRole.Student)
     @ApiOperation({ summary: 'Registers the authenticated student for a course' })
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 400, description: 'User already registered for this course' })
-    async registerCourse(@Req() req: RequestInterface, @Param('id') courseId: string) {
+    async registerCourse(@Req() req: RequestInterface, @Param('courseId') courseId: string) {
         const userId = req.user.id;
         return await this.coursesService.registerCourse(userId, courseId);
     }
