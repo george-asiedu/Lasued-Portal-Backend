@@ -6,7 +6,12 @@ export const UserResponseExample = {
             name: 'George Asiedu',
             email: 'george.asiedu@gmail.com',
             role: 'admin',
-            isVerified: false
+            isVerified: true,
+            programme: 'Software Engineering',
+            dob: '24-10-1998',
+            phone: '0123456789',
+            address: '2 Pine Street',
+            registered: true
         }
     }
 }
@@ -19,7 +24,12 @@ export const RegisterResponseExample = {
             name: 'George Asiedu',
             email: 'george.asiedu@gmail.com',
             role: 'admin',
-            isVerified: false
+            isVerified: true,
+            programme: null,
+            dob: null,
+            phone: null,
+            address: null,
+            registered: false
         },
         token: 'block token'
     }
@@ -34,7 +44,12 @@ export const LoginResponseExample = {
             email: 'george.asiedu@gmail.com',
             name: 'George Asiedu',
             role: 'Admin',
-            isVerified: true
+            isVerified: true,
+            programme: null,
+            dob: null,
+            phone: null,
+            address: null,
+            registered: false
         }
     }
 }
@@ -48,7 +63,12 @@ export const GetAllUsersResponseExample = {
             email: 'george.asiedu@gmail.com',
             role: 'admin',
             refreshToken: null,
-            isVerified: true
+            isVerified: true,
+            programme: 'Software Engineering',
+            dob: '24-10-1998',
+            phone: '0123456789',
+            address: '2 Pine Street',
+            registered: true
         }
     ]
 }
