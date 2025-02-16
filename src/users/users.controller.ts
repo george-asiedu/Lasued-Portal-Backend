@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Req} from '@nestjs/common';
+import { Controller, Delete, Get, Param, ParseUUIDPipe, Req} from '@nestjs/common';
 import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {BaseController} from "../utils/baseController";
 import { UsersService } from './users.service';
@@ -28,23 +28,6 @@ export class UsersController extends BaseController {
         return await this.usersService.getAllUsers();
     }
 
-    @Get(':id')
-    @Roles(UserRole.Admin)
-    @ApiOperation({ summary: 'Retrieves a user by ID.' })
-    @ApiResponse({
-        status: 200,
-        description: 'Success',
-        example: UserResponseExample
-    })
-    @ApiResponse({
-        status: 400,
-        description: 'Bad Request.',
-        example: { message: 'Invalid user ID format.' }
-    })
-    async getUserById(@Param('id', ParseUUIDPipe) id: string): Promise<User | null> {
-        return await this.usersService.getUserById(id);
-    }
-
     @Get('profile')
     @ApiOperation({ summary: 'Retrieves the profile of the logged-in user.' })
     @ApiResponse({
@@ -61,8 +44,9 @@ export class UsersController extends BaseController {
         return await this.usersService.getUserProfile(req.user);
     }
 
-    @Patch('update-user')
-    @ApiOperation({ summary: 'Updates the user data info' })
+    @Get(':id')
+    @Roles(UserRole.Admin)
+    @ApiOperation({ summary: 'Retrieves a user by ID.' })
     @ApiResponse({
         status: 200,
         description: 'Success',
@@ -71,10 +55,10 @@ export class UsersController extends BaseController {
     @ApiResponse({
         status: 400,
         description: 'Bad Request.',
-        example: { message: 'User ID not valid' }
+        example: { message: 'Invalid user ID format.' }
     })
-    async updateUser(@Param('id') id: string, @Body() updateData: Partial<User>) {
-        return await this.usersService.updateUser(id, updateData);
+    async getUserById(@Param('id', ParseUUIDPipe) id: string): Promise<User | null> {
+        return await this.usersService.getUserById(id);
     }
 
     @Delete(':id')
