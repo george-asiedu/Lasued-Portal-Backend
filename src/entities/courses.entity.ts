@@ -1,4 +1,5 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import { CourseRegistration } from "./course-registration.entity";
 
 @Entity()
 export class Courses {
@@ -13,4 +14,7 @@ export class Courses {
 
     @Column({ type: 'integer' })
     public credit_units!: number;
+
+    @OneToMany(() => CourseRegistration, (registration) => registration.course)
+    public courseRegistrations!: CourseRegistration[];
 }
