@@ -1,16 +1,21 @@
-import {Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post} from '@nestjs/common';
+import {
+    Body,
+    Controller, Delete,
+    Get, Param, ParseUUIDPipe,
+    Patch, Post, Req
+} from '@nestjs/common';
 import {BaseController} from "../utils/baseController";
 import {ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import { CoursesService } from './courses.service';
 import {Roles} from "../guards/roles/roles.decorator";
 import {UserRole} from "../model/role.enum";
-import {CoursesResponseExample, GetAllCursesResponseExample,} from "../utils/response.model";
+import {CoursesResponseExample, GetAllCursesResponseExample} from "../utils/response.model";
 import {CoursesDto} from "./dto/courses.dto";
 import {UpdateCourseDto} from "./dto/updateCourse.dto";
+import {RequestInterface} from "../model/auth.model";
 
 @ApiTags('Courses')
 @ApiBearerAuth()
-@Roles(UserRole.Admin)
 @Controller('courses')
 export class CoursesController extends BaseController {
     constructor(private coursesService: CoursesService) {
@@ -18,6 +23,7 @@ export class CoursesController extends BaseController {
     }
 
     @Post('add-course')
+    @Roles(UserRole.Admin)
     @ApiOperation({ summary: 'Creates a new course.' })
     @ApiBody({ type: CoursesDto, description: 'Create new course.' })
     @ApiResponse({
@@ -35,6 +41,7 @@ export class CoursesController extends BaseController {
     }
 
     @Get('all-courses')
+    @Roles(UserRole.Admin)
     @ApiOperation({ summary: 'Displays all courses in the system.' })
     @ApiResponse({
         status: 200,
@@ -46,6 +53,7 @@ export class CoursesController extends BaseController {
     }
 
     @Patch('update-course')
+    @Roles(UserRole.Admin)
     @ApiOperation({ summary: 'Updates the courses data info' })
     @ApiBody({ type: UpdateCourseDto, description: 'Updates the courses data info' })
     @ApiResponse({
@@ -63,6 +71,7 @@ export class CoursesController extends BaseController {
     }
 
     @Get(':id')
+    @Roles(UserRole.Admin)
     @ApiOperation({ summary: 'Retrieves a course by id.' })
     @ApiResponse({
         status: 200,
@@ -78,7 +87,18 @@ export class CoursesController extends BaseController {
         return await this.coursesService.getCourseById(id);
     }
 
+    @Post(':id/register')
+    @Roles(UserRole.Student)
+    @ApiOperation({ summary: 'Registers the authenticated student for a course' })
+    @ApiResponse({ status: 200, description: 'Success' })
+    @ApiResponse({ status: 400, description: 'User already registered for this course' })
+    async registerCourse(@Req() req: RequestInterface, @Param('id') courseId: string) {
+        const userId = req.user.id;
+        return await this.coursesService.registerCourse(userId, courseId);
+    }
+
     @Delete(':id')
+    @Roles(UserRole.Admin)
     @ApiOperation({ summary: 'Deletes a course by ID' })
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 400, description: 'Bad Request', example: { message: 'Invalid course ID format.' } })
