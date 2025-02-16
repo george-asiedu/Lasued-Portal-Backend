@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { SeedsModule } from './seeds/seeds.module';
 import {AdminSeeder} from "./seeds/admin.seeder";
+import { CoursesModule } from './courses/courses.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -40,6 +41,7 @@ import {AdminSeeder} from "./seeds/admin.seeder";
     AuthModule,
     UsersModule,
     SeedsModule,
+    CoursesModule,
   ],
   controllers: [AppController],
   providers: [
@@ -47,7 +49,7 @@ import {AdminSeeder} from "./seeds/admin.seeder";
       provide: APP_PIPE,
       useClass: ValidationPipe,
     },
-    AppService, AdminSeeder
+    AppService
   ],
 })
 export class AppModule implements OnModuleInit {
