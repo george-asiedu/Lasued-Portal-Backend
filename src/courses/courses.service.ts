@@ -30,9 +30,9 @@ export class CoursesService {
     }
 
     async updateCourse(id: string, updateData: Partial<CoursesDto>): Promise<Courses> {
-        const course = await this.getCourseById(id); // Ensure course exists
+        const course = await this.getCourseById(id);
 
-        Object.assign(course, updateData); // Update the course fields
+        Object.assign(course, updateData);
         return await this.coursesRepository.save(course);
     }
 
