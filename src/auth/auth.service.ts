@@ -78,12 +78,9 @@ export class AuthService {
             throw new BadRequestException('Invalid token');
         }
 
-        const userId = parseInt(payload.userId, 10);
-        if (isNaN(userId)) {
-            throw new BadRequestException('Invalid user ID');
-        }
-
+        const userId = payload.userId;
         const user = await this.usersRepository.findOne({ where: { id: userId } });
+
         if (!user) {
             throw new BadRequestException('User not found');
         }
