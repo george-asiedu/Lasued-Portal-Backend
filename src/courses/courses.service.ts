@@ -42,7 +42,9 @@ export class CoursesService {
     }
 
     async registerCourse(userId: string, courseId: string): Promise<CourseRegistration> {
-        const student = await this.userRepository.findOne({ where: { id: userId } });
+        const student = await this.userRepository.findOne(
+            { where: { id: userId }, relations: ['courseRegistrations'] }
+        );
         if (!student) {
             throw new NotFoundException(`Student with ID ${userId} not found`);
         }
