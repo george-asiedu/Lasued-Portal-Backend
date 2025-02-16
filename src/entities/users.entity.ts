@@ -12,6 +12,18 @@ export class User {
     @Column()
     public name!: string;
 
+    @Column({ type: 'varchar', nullable: true })
+    public programme!: string;
+
+    @Column({ type: 'varchar', nullable: true })
+    public address!: string;
+
+    @Column({ type: 'varchar', length: 15, nullable: true })
+    public phone!: string;
+
+    @Column({ type: 'date', nullable: true })
+    public dob!: string;
+
     @Column({ unique: true })
     public email!: string;
 
