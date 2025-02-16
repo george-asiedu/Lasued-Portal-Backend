@@ -45,6 +45,10 @@ export class User {
     @DeleteDateColumn({ type: 'timestamp', nullable: true })
     deletedAt!: Date | null
 
+    get registered(): boolean {
+        return this.courseRegistrations && this.courseRegistrations.length > 0;
+    }
+
     public static async hashPassword(password: string): Promise<string> {
         const salt = await bcrypt.genSalt(10);
         return bcrypt.hash(password, salt);
