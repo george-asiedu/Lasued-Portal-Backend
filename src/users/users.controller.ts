@@ -1,5 +1,5 @@
-import { Controller, Delete, Get, Param, ParseUUIDPipe, Req} from '@nestjs/common';
-import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Req, UsePipes, ValidationPipe} from '@nestjs/common';
+import {ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import {BaseController} from "../utils/baseController";
 import { UsersService } from './users.service';
 import { Roles } from 'src/guards/roles/roles.decorator';
@@ -7,6 +7,7 @@ import { UserRole } from 'src/model/role.enum';
 import { GetAllUsersResponseExample, UserResponseExample } from 'src/utils/response.model';
 import { User } from 'src/entities/users.entity';
 import { RequestInterface } from 'src/model/auth.model';
+import { UpdateBioDataDto } from './dto/bio-data.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -42,6 +43,27 @@ export class UsersController extends BaseController {
     })
     async getProfile(@Req() req: RequestInterface): Promise<User | null> {
         return await this.usersService.getUserProfile(req.user);
+    }
+
+    @Patch('bio-data/:id')
+    @UsePipes(new ValidationPipe({ whitelist: true }))
+    @ApiOperation({ summary: 'Updates the bio-data info of a user.' })
+    @ApiBody({ type: UpdateBioDataDto, description: 'Update bio data' })
+    @ApiResponse({
+        status: 200,
+        description: 'Success',
+        example: UserResponseExample
+    })
+    @ApiResponse({
+        status: 400,
+        description: 'Bad Request.',
+        example: { message: 'User ID not valid' }
+    })
+    async updateBioData(
+        @Param('id') id: string,
+        @Body() updateBioDataDto: UpdateBioDataDto
+    ): Promise<User> {
+        return this.usersService.updateBioData(id, updateBioDataDto);
     }
 
     @Get(':id')
