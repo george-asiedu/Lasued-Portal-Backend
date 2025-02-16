@@ -103,6 +103,7 @@ export class AuthService {
 
         const user = await this.usersRepository.findOne({
             where: { email: email.toLowerCase() },
+            relations: ['courseRegistrations'],
             select: ['id', 'email', 'password', 'isVerified', 'name', 'role']
         });
 
@@ -158,6 +159,7 @@ export class AuthService {
             });
             const user = await this.usersRepository.findOne({
                 where: { id: payload.sub, refreshToken: refreshToken.refreshToken },
+                relations: ['courseRegistrations'],
             });
 
             if (!user) {

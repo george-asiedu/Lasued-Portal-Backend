@@ -2,6 +2,7 @@ import {Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGe
 import * as bcrypt from 'bcrypt';
 import { UserRole } from 'src/model/role.enum';
 import { CourseRegistration } from './course-registration.entity';
+import {Expose} from "class-transformer";
 
 @Entity()
 export class User {
@@ -45,6 +46,7 @@ export class User {
     @DeleteDateColumn({ type: 'timestamp', nullable: true })
     deletedAt!: Date | null
 
+    @Expose()
     get registered(): boolean {
         return this.courseRegistrations && this.courseRegistrations.length > 0;
     }
