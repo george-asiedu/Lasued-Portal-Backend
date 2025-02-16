@@ -41,7 +41,7 @@ import { CoursesModule } from './courses/courses.module';
     AuthModule,
     UsersModule,
     SeedsModule,
-    CoursesModule,
+    CoursesModule
   ],
   controllers: [AppController],
   providers: [
