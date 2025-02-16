@@ -4,8 +4,8 @@ import { UserRole } from 'src/model/role.enum';
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
-    public id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    public id!: string;
 
     @Column()
     public name!: string;
