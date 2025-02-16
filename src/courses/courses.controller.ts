@@ -1,18 +1,16 @@
 import {Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post} from '@nestjs/common';
 import {BaseController} from "../utils/baseController";
-import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import { CoursesService } from './courses.service';
 import {Roles} from "../guards/roles/roles.decorator";
 import {UserRole} from "../model/role.enum";
-import {
-    CoursesResponseExample,
-    GetAllCursesResponseExample,
-} from "../utils/response.model";
+import {CoursesResponseExample, GetAllCursesResponseExample,} from "../utils/response.model";
 import {CoursesDto} from "./dto/courses.dto";
-import {Courses} from "../entities/courses.entity";
+import {UpdateCourseDto} from "./dto/updateCourse.dto";
 
 @ApiTags('Courses')
 @ApiBearerAuth()
+@Roles(UserRole.Admin)
 @Controller('courses')
 export class CoursesController extends BaseController {
     constructor(private coursesService: CoursesService) {
@@ -21,6 +19,7 @@ export class CoursesController extends BaseController {
 
     @Post('add-course')
     @ApiOperation({ summary: 'Creates a new course.' })
+    @ApiBody({ type: CoursesDto, description: 'Create new course.' })
     @ApiResponse({
         status: 200,
         description: 'Success',
@@ -29,14 +28,13 @@ export class CoursesController extends BaseController {
     @ApiResponse({
         status: 400,
         description: 'Bad Request.',
-        example: { message: 'Course ID not valid' }
+        example: { message: 'Invalid Course object' }
     })
     async addCourse(@Body() coursesDto: CoursesDto){
         return await this.coursesService.createCourse(coursesDto);
     }
 
     @Get('all-courses')
-    @Roles(UserRole.Admin)
     @ApiOperation({ summary: 'Displays all courses in the system.' })
     @ApiResponse({
         status: 200,
@@ -47,8 +45,24 @@ export class CoursesController extends BaseController {
         return await this.coursesService.getAllCourses();
     }
 
+    @Patch('update-course')
+    @ApiOperation({ summary: 'Updates the courses data info' })
+    @ApiBody({ type: UpdateCourseDto, description: 'Updates the courses data info' })
+    @ApiResponse({
+        status: 200,
+        description: 'Success',
+        example: CoursesResponseExample
+    })
+    @ApiResponse({
+        status: 400,
+        description: 'Bad Request.',
+        example: { message: 'Course ID not valid' }
+    })
+    async updateCourse(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
+        return await this.coursesService.updateCourse(id, updateCourseDto);
+    }
+
     @Get(':id')
-    @Roles(UserRole.Admin)
     @ApiOperation({ summary: 'Retrieves a course by id.' })
     @ApiResponse({
         status: 200,
@@ -64,24 +78,7 @@ export class CoursesController extends BaseController {
         return await this.coursesService.getCourseById(id);
     }
 
-    @Patch('update-course')
-    @ApiOperation({ summary: 'Updates the courses data info' })
-    @ApiResponse({
-        status: 200,
-        description: 'Success',
-        example: CoursesResponseExample
-    })
-    @ApiResponse({
-        status: 400,
-        description: 'Bad Request.',
-        example: { message: 'Course ID not valid' }
-    })
-    async updateCourse(@Param('id') id: string, @Body() updateData: Partial<Courses>) {
-        return await this.coursesService.updateCourse(id, updateData);
-    }
-
     @Delete(':id')
-    @Roles(UserRole.Admin)
     @ApiOperation({ summary: 'Deletes a course by ID' })
     @ApiResponse({ status: 200, description: 'Success' })
     @ApiResponse({ status: 400, description: 'Bad Request', example: { message: 'Invalid course ID format.' } })
