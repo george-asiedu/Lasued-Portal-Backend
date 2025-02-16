@@ -14,7 +14,7 @@ export class UsersService {
         return await this.usersRepository.find();
     }
 
-    async getUserById(id: number): Promise<User | null> {
+    async getUserById(id: string): Promise<User | null> {
         return await this.usersRepository.findOneBy({ id });
     }
 
@@ -29,7 +29,7 @@ export class UsersService {
         return foundUser;
     }
 
-    async updateUser(id: number, updateData: Partial<User>): Promise<User> {
+    async updateUser(id: string, updateData: Partial<User>): Promise<User> {
         const user = await this.usersRepository.findOneBy({ id });
 
         if (!user) {
