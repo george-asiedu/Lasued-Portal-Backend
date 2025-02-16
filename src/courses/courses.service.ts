@@ -42,10 +42,4 @@ export class CoursesService {
             throw new NotFoundException(`Course with ID ${id} not found`);
         }
     }
-
-    async registerCourseForSemester(courseId: string, semester: string): Promise<Courses> {
-        const course = await this.getCourseById(courseId);
-        (course as any).semester = semester;
-        return await this.coursesRepository.save(course);
-    }
 }
