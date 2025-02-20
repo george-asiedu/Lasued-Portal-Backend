@@ -1,9 +1,10 @@
 import {
     Body, Controller, Post,
-    Query, UseInterceptors,
+    Query, UseGuards, UseInterceptors,
     UsePipes, ValidationPipe
 } from '@nestjs/common';
 import {
+    ApiBearerAuth,
     ApiBody, ApiOperation,
     ApiParam, ApiResponse, ApiTags
 } from '@nestjs/swagger';
@@ -18,6 +19,7 @@ import {
 import {VerifyAccountDto} from "./dto/verifyAccount.dto";
 import {SigninDto} from "./dto/signin.dto";
 import { RefreshTokenDto } from './dto/refreshToken.dto';
+import {AuthGuard} from "../guards/auth/auth.guard";
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -79,7 +81,8 @@ export class AuthController {
     async signIn(@Body() signInDto: SigninDto) {
         return this.authService.signIn(signInDto);
     }
-
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard)
     @Post('refresh-token')
     @UsePipes(new ValidationPipe({ forbidNonWhitelisted: true, }))
     @ApiOperation({ summary: 'Allow continuous user access in the system using a refresh token.' })
