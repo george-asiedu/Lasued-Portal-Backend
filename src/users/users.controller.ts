@@ -66,7 +66,7 @@ export class UsersController extends BaseController {
         return this.usersService.updateBioData(id, updateBioDataDto);
     }
 
-    @Get(':id')
+    @Get('profile/:id')
     @Roles(UserRole.Admin)
     @ApiOperation({ summary: 'Retrieves a user by ID.' })
     @ApiResponse({
